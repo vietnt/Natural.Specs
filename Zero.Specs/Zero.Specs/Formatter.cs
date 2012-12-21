@@ -43,16 +43,29 @@ namespace Zero.Specs
                     });
         }
 
-        public static string GetValue(this Expression expr)
+        public static object GetValue(this Expression expr)
         {
             if (expr is ConstantExpression)
             {
-                return ((ConstantExpression)expr).Value.FormatValue();
+                return ((ConstantExpression)expr).Value;
+            }
+            if (expr is MemberExpression)
+            {
+                var m = (MemberExpression) expr;
+                if (m.Member is FieldInfo)
+                {
+                    var fi = (FieldInfo) m.Member;
+                    var v = m.Expression.GetValue();
+
+                    return fi.GetValue(v);
+                }
+
+                return m.Expression.GetValue();
             }
 
             return expr.Switch(
                 call => call.FormatArguments(),
-                bin => bin.Right.ToString());
+                bin => bin.Right.GetValue());
         }
 
         public static string GetCond(this Expression expr)

@@ -49,7 +49,7 @@ namespace Zero.Specs
         public static Scenario<T> Should<T>(this Scenario<T> scenario, Expression<Func<T, bool>> f)
         {
             var expr = f.Body;
-            var s = string.Format("  + {0} should {1} [{2}]", expr.GetSubject(), expr.GetCond(), expr.GetValue());
+            var s = string.Format("  + {0} should {1} [{2}]", expr.GetSubject(), expr.GetCond(), expr.GetValue().FormatValue());
             var success = f.Compile()(scenario.Value);
 
             if (!success) Assert.Fail(s + expr.Explain(scenario.Value));
@@ -78,7 +78,7 @@ namespace Zero.Specs
         {
             var expr = e.Body;
 
-            Console.WriteLine(" - When {0} [{1}]", expr.GetCond(), expr.GetValue());
+            Console.WriteLine(" - When {0} [{1}]", expr.GetCond(), expr.GetValue().FormatValue());
 
             scenario.Value = e.Compile()(scenario.Value);
 
@@ -92,7 +92,7 @@ namespace Zero.Specs
         {
             var expr = e.Body;
 
-            Console.WriteLine(" - When {0} [{1}]", expr.GetCond(), expr.GetValue());
+            Console.WriteLine(" - When {0} [{1}]", expr.GetCond(), expr.GetValue().FormatValue());
 
             e.Compile()(scenario.Value);
 

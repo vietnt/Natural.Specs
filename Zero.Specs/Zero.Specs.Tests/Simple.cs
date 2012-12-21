@@ -4,6 +4,17 @@ using NUnit.Framework;
 namespace Zero.Specs.Tests
 {
     [TestFixture]
+    public class Number_Specs
+    {
+        [Test]
+        public void When_div_by_zero()
+        {
+            var zero = 0;
+            Specs.Given(10).When(it => it/zero);
+        }
+    }
+
+    [TestFixture]
     public class Simple
     {
         [Test]
